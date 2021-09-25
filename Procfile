@@ -1,2 +1,1 @@
-web: python registrationForm.py
-worker: python registrationForm.py
+web: sh setup.sh && streamlit run registrationForm.py
