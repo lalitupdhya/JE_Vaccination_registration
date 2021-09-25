@@ -5,7 +5,7 @@ import datetime as dt
 
 st.title('JE vaccination Drive Biswanath District.')
 
-df = pd.read_excel('BiswanathHealthFacilities.xlsx')
+df = pd.read_csv('BiswanathHealthFacilities.csv')
 
 bphc = list(df.Health_Block.unique())
 option1 = st.selectbox(
@@ -19,7 +19,7 @@ option2 = st.selectbox(
         insName
     )
 try:
-    df_final = pd.read_excel('newEntries.xlsx')
+    df_final = pd.read_csv('newEntries.csv')
 except:
     df_final = pd.DataFrame()
 with st.form(key="form1", clear_on_submit = True):
@@ -42,5 +42,5 @@ with st.form(key="form1", clear_on_submit = True):
         }
         temp = pd.DataFrame(entry)
         df_final = pd.concat([df_final,temp])
-        df_final.to_excel('newEntries.xlsx', index=False)
+        df_final.to_csv('newEntries.csv', index=False)
         st.write(f'{name} is registered successfully !')
