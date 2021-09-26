@@ -1,31 +1,33 @@
 import streamlit as st
 import pandas as pd
 import datetime as dt
+import base64
 
 
 st.title('JE vaccination Drive Biswanath District.')
 
-df = pd.read_csv('BiswanathHealthFacilities.csv')
+if 'df' not in st.session_state:
+    st.session_state.df = pd.read_csv('BiswanathHealthFacilities.csv')
 
-bphc = list(df.Health_Block.unique())
+bphc = list(st.session_state.df.Health_Block.unique())
 option1 = st.selectbox(
     'Enter the BPHC',
     bphc
-)
-
-insName = list(df[df.Health_Block==option1].Facility_Name.unique())
-option2 = st.selectbox(
-        'Enter the Health Institution Name',
-        insName
     )
-try:
-    df_final = pd.read_csv('newEntries.csv')
-except:
-    df_final = pd.DataFrame()
+insName = list(st.session_state.df[st.session_state.df.Health_Block==option1].Facility_Name.unique())
+option2 = st.selectbox(
+    'Enter the Health Institution Name',
+    insName
+    )
+
+
+if 'df_final' not in st.session_state:
+    st.session_state.df_final = pd.DataFrame()
+
 with st.form(key="form1", clear_on_submit = True):
     name = st.text_input(label = "Enter name of the person")
-    age = st.text_input(label = "Enter age of the person")
-    sex = st.text_input(label = "Enter sex of the person")
+    age = st.selectbox("Enter age of the person", [k for k in range(120)])
+    sex = st.selectbox("Enter sex of the person", ['Female','Male','Other'])
     address = st.text_input(label = "Enter address of the person")
     mob = st.text_input(label = "Enter phone no of the person")
     submit = st.form_submit_button(label = "Submit")
@@ -41,6 +43,8 @@ with st.form(key="form1", clear_on_submit = True):
             "Facility_Name": option2
         }
         temp = pd.DataFrame(entry)
-        df_final = pd.concat([df_final,temp])
-        df_final.to_csv('newEntries.csv', index=False)
+        st.session_state.df_final = pd.concat([st.session_state.df_final,temp])
         st.write(f'{name} is registered successfully !')
+
+
+st.download_button('Download File', data=st.session_state.df_final.to_csv(index=False), mime='text/csv')
