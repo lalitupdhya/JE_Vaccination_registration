@@ -1,8 +1,9 @@
 import streamlit as st
 import pandas as pd
 import datetime as dt
-import base64
+import pytz
 
+IST = pytz.timezone('Asia/Kolkata')
 
 st.title('JE vaccination Drive Biswanath District.')
 
@@ -33,7 +34,7 @@ with st.form(key="form1", clear_on_submit = True):
     submit = st.form_submit_button(label = "Submit")
     if submit:
         entry = {
-            "date":[dt.datetime.now()],
+            "date":[dt.datetime.now(IST).strftime('%Y:%m:%d %H:%M:%S')],
             "name":[name],
             "age" : [age],
             "sex":[sex],
