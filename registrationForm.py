@@ -3,6 +3,7 @@ import pandas as pd
 import datetime as dt
 import pytz
 
+
 IST = pytz.timezone('Asia/Kolkata')
 
 st.title('JE vaccination Drive Biswanath District.')
@@ -27,10 +28,11 @@ if 'df_final' not in st.session_state:
 
 with st.form(key="form1", clear_on_submit = True):
     name = st.text_input(label = "Enter name of the person")
-    age = st.selectbox("Enter age of the person", [k for k in range(120)])
+    # age = st.selectbox("Enter age of the person", [k for k in range(120)])
+    age = st.number_input("Enter Age", min_value=0, max_value=120)
     sex = st.selectbox("Enter sex of the person", ['Female','Male','Other'])
     address = st.text_input(label = "Enter address of the person")
-    mob = st.text_input(label = "Enter phone no of the person")
+    mob = st.number_input("Enter phone no of the person", min_value=6000000000, max_value=9999999999)
     submit = st.form_submit_button(label = "Submit")
     if submit:
         entry = {
